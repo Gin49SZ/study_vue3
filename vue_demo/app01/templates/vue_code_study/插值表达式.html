@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插值表达式</title>
+    <script src="..\..\static\js\vue.js"></script>  
+</head>
+<body>
+    <div id="app">
+        <div>我叫{{ name }}，我喜欢{{ hobby }}，邮箱{{ dataInfo.email }}</div>
+        <ul>
+            <li>{{ 'Li Hua' }}</li>
+            <li>{{ 'Li Hua' + 'has a football' }}</li>
+            <li>{{ base + 1 + 1 }}</li>
+            <li>{{ 1===1 ?'Li Hua':'Li Min' }}</li>
+        </ul>
+        <ul>
+            <li>{{ condition?'Li Hua':'Li Min' }}</li>
+        </ul>
+        <input type="button" value="点我" v-on:click="clickMe">
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                name: 'Cai Xukun',
+                hobby: 'Basketball',
+                dataInfo: {
+                    id: 1,
+                    email: "xxx.com"
+                },
+                condition:false,
+                base:1,
+            },
+            methods: {
+                clickMe: function () {
+                    this.name = "Alex";
+                    this.condition = true;
+                    this.base += 100;
+
+                }
+            }
+        });
+    </script> 
+</body>
+</html>

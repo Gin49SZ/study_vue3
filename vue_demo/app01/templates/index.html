@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 1.引入vue.js文件-->
+    <script src="..\static\js\vue.js"></script>  
+</head>
+<body>
+
+    <!-- 2.指定区域，该区域的内容希望由vue.js来接管-->
+    <div id="app">
+        <h1>欢迎学习Vue.js</h1>
+        <div>我叫{{ name }}，微信{{ wechat }}</div>
+        <input type="button" value="点我" v-on:click="clickMe">
+    </div>  
+
+    <script>
+        // 3.创建Vue对象，并关联指定的HTML区域
+        var app = new Vue({
+            el: '#app',
+            data: {
+                name:'Gin49SZ',
+                wechat:'gin49sz'
+            },
+            methods: {
+                clickMe: function () {
+                    // 获取值this.name
+                    // 修改值this.name = 'xx'
+                    this.name = "Alex";
+                    this.wechat = "wupeiqi666";
+                }
+            }
+        });
+    </script> 
+</body>
+</html>

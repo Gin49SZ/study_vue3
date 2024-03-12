@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-bind指令</title>
+    <script src="..\..\static\js\vue.js"></script>  
+    <style>
+        .ig{
+            border: 2px solid red;
+        }
+        .danger{
+            color:red;
+        }
+        .info{
+            background-color:#a7bb6e54;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <img alt="" v-bind:src="imageUrl" v-bind:class="cls">
+        <h1 v-bind:class="{info:v1, danger:v2}">你好呀</h1>
+        <h1 v-bind:class="clsDict">Hello</h1>
+
+        <h2 v-bind:class="[a1, a2]">Welcome to you</h1>
+        <h2 v-bind:class="[ 1 === 1 ? a1 : a2 ]">this is a condition</h1><!--条件判断，若为true返回a1否则返回a2-->
+        <h2 v-bind:class=" 1 === 1 ? 'info' : 'danger' ">this is another condition</h1><!--与上一个效果相同-->
+
+        <h3 v-bind:style="{ color:clr, fontSize:'19px' }">use v-bind:style</h3>
+
+        <input type="button" value="点我" v-on:click="clickMe"></input>
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                imageUrl:"https://ts3.cn.mm.bing.net/th?id=OIP-C.8sRBqy4rxjr9sBgsPpNlowHaLH&w=204&h=306&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2",
+                cls:"ig",   //对应的class="ig"
+
+                v1:true,
+                v2:false,   //对应的class="info"
+
+                clsDict:{
+                    info:false,
+                    danger:true,
+                },          //对应的class="danger"
+
+                a1:"info",
+                a2:"danger",    //对应的class="info danger"
+
+                clr:"red",
+            },
+            methods: {
+                clickMe: function () {
+                    this.v1 = false;    //修改v1为false, "你好呀"的class中去掉了info
+                }
+            },
+        });
+    </script> 
+</body>
+</html>
