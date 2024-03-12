@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            用户名：<input type="text" v-model="user">
+        </div>
+        <div>
+            密码：<input type="password" v-model="pwd">
+        </div>
+        <input type="button" value="登录" v-on:click="clickMe">
+        <input type="button" value="重置" v-on:click="resetForm">
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: "",
+                pwd: "",
+            },
+            methods: {
+                clickMe: function () {
+                    console.log(this.user, this.pwd);
+                },
+                resetForm: function () {
+                    this.user = "";
+                    this.pwd = "";
+                },
+            },
+        });
+    </script> 
+</body>
+</html>

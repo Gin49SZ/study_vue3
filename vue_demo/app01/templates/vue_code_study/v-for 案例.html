@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--示例1-->
+    <ul>
+        <li v-for="item in dataList">{{item}}</li>
+    </ul>
+    <!--示例2-->
+    <ul>
+        <li v-for="(idx, item) in dataList">{{idx}}-{{item}}</li>
+    </ul>
+    <!--示例3-->
+    <ul>
+        <li v-for="(key, value) in dataDict">{{key}}-{{value}}</li>
+    </ul>
+    <!--示例4-->
+    <ul>
+        <li v-for="(idx, item) in cityList">{{item.id}}-{{item.city}}</li>
+    </ul>
+    <!--示例5-->
+    <ul>
+        <li v-for="(idx, item) in cityList">
+            <span style="color: aqua" v-for="(k, v) in item">{{k}} {{v}}</span>
+        </li>
+    </ul>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            dataList: ['a', 'b', 'c'],
+            dataDict: {
+                id: 1,
+                age: 18,
+                name: "xx",
+            },
+            cityList: [
+                {id:11, city:"上海"},
+                {id:12, city:"北京"},
+                {id:13, city:"深圳"},
+            ],
+        }
+    });
+</script>
+</body>
+</html>

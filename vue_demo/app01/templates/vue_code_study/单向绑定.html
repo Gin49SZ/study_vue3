@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单向绑定</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{txt}}</h1>
+        <input type="text" :value="txt">
+        <input type="button" value="点击" v-on:click="clickMe">
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                txt: "武沛齐", //单向绑定，在页面修改值，并不会修改相关联的js
+            },
+            methods: {
+                clickMe: function () {
+                    this.txt = "Alex";
+                },
+            },
+        });
+    </script> 
+</body>
+</html>

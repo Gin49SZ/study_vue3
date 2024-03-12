@@ -193,3 +193,272 @@ Vue 是一个现代 JavaScript 框架，是jQuery的替代
   ```
 
 - v-bind属于单向绑定(JS修改 -> HTML修改)
+
+  ```vue
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>插值表达式</title>
+      <script src="..\..\static\js\vue.js"></script>  
+  </head>
+  <body>
+      <div id="app">
+          <h1>{{txt}}</h1>
+          <input type="text" :value="txt">
+          <input type="button" value="点击" v-on:click="clickMe">
+      </div>  
+  
+      <script>
+          var app = new Vue({
+              el: '#app',
+              data: {
+                  txt: "武沛齐", //单项绑定，在页面修改值，并不会修改相关联的js
+              },
+              methods: {
+                  clickMe: function () {
+                      this.txt = "Alex";
+                  },
+              },
+          });
+      </script> 
+  </body>
+  </html>
+  ```
+
+## 2.3 v-model指令
+
+一般用于在交互的表中使用，例如input、select、textarea等 [双向绑定]
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单向绑定</title>
+    <script src="..\..\static\js\vue.js"></script>  
+</head>
+<body>
+    <div id="app">
+        <div>
+            用户名：<input type="text" v-model="user">
+        </div>
+        <div>
+            密码：<input type="password" v-model="pwd">
+        </div>
+        <input type="button" value="登录" v-on:click="clickMe">
+        <input type="button" value="重置" v-on:click="resetForm">
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user: "",
+                pwd: "",
+            },
+            methods: {
+                clickMe: function () {
+                    console.log(this.user, this.pwd);
+                },
+                resetForm: function () {
+                    this.user = "";
+                    this.pwd = "";
+                },
+            },
+        });
+    </script> 
+</body>
+</html>
+```
+
+更多细节
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        用户名：<input type="text" v-model="info.user">
+    </div>
+    <div>
+        用户名：<input type="password" v-model="info.pwd">
+    </div>
+    <div>
+        性别：
+        <input type="radio" v-model="info.gender" value="1">男
+        <input type="radio" v-model="gender" value="2">女
+    </div>
+    <div>
+        爱好：
+        <input type="checkbox" v-model="hobby" value="1">篮球
+        <input type="checkbox" v-model="hobby" value="2">足球
+        <input type="checkbox" v-model="hobby" value="3">板球
+    </div>
+    <div>
+        城市：
+        <select v-model="city">
+            <option value="sh">上海</option>
+            <option value="bj">北京</option>
+            <option value="sd">山东</option>
+        </select>
+    </div>
+    <div>
+        擅长领域：
+        <select v-model="company" multiple>
+            <option value="js">技术</option>
+            <option value="xs">销售</option>
+            <option value="yy">运营</option>
+        </select>
+    </div>
+    <div>
+        其他：<textarea v-model="more"></textarea>
+    </div>
+    <input type="button" value="注册" v-on:click="Clickme">
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info:{
+                user: "",
+                pwd: "",
+                gender: "1",
+            },
+            hobby: ["1"],
+            city: "",
+            company:["js"],
+            more: "...",
+        },
+        methods: {
+            Clickme: function () {
+                console.log(this.info, this.hobby, this.city, this.company, this.more)
+            }
+        }
+    });
+</script>
+</body>
+</html>
+```
+
+## 2.4 v-for指令
+
+用户数据进行循环并展示
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--示例1-->
+    <ul>
+        <li v-for="item in dataList">{{item}}</li>
+    </ul>
+    <!--示例2-->
+    <ul>
+        <li v-for="(idx, item) in dataList">{{idx}}-{{item}}</li>
+    </ul>
+    <!--示例3-->
+    <ul>
+        <li v-for="(key, value) in dataDict">{{key}}-{{value}}</li>
+    </ul>
+    <!--示例4-->
+    <ul>
+        <li v-for="(idx, item) in cityList">{{item.id}}-{{item.city}}</li>
+    </ul>
+    <!--示例5-->
+    <ul>
+        <li v-for="(idx, item) in cityList">
+            <span style="color: aqua" v-for="(k, v) in item">{{k}} {{v}}</span>
+        </li>
+    </ul>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            dataList: ['a', 'b', 'c'],
+            dataDict: {
+                id: 1,
+                age: 18,
+                name: "xx",
+            },
+            cityList: [
+                {id:11, city:"上海"},
+                {id:12, city:"北京"},
+                {id:13, city:"深圳"},
+            ],
+        }
+    });
+</script>
+</body>
+</html>
+```
+
+## 2.5 v-on指令
+
+事件相关的指令，例如：
+
+```
+v-on:click
+v-on:dblclick
+v-on:mouseover
+v-on:mouseout
+v-on:change
+v-on:focus
+```
+
+简写格式：`@:事件="函数"`
+
+```vue
+<li v-on:dblclick="doSomething('双击')">双击</li>
+
+<li @:dblclick="doSomething('双击')">双击</li>
+```
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-on指令</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li @:dblclick="doSomething('双击')">双击</li>
+        <li v-on:mouseover="doSomething('进入')" v-on:mouseout="doSomething('退出')">进入&退出</li>
+    </ul>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+        },
+        methods:{
+            doSomething: function (msg) {
+                console.log(msg);
+            }
+        }
+    });
+</script>
+</body>
+</html>
+```
+
+
+
+
+

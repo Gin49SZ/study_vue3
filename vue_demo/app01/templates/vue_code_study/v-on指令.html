@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-on指令</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li @:dblclick="doSomething('双击')">双击</li>
+        <li v-on:mouseover="doSomething('进入')" v-on:mouseout="doSomething('退出')">进入&退出</li>
+    </ul>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+        },
+        methods:{
+            doSomething: function (msg) {
+                console.log(msg);
+            }
+        }
+    });
+</script>
+</body>
+</html>
