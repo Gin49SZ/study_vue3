@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-if指令</title>
+    <script src="..\..\static\js\vue.js"></script>  
+</head>
+<body>
+    <div id="app">
+        <a v-if="isLogin">您好，{{ user }}</a>
+        <a v-else href="">登录</a>
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                isLogin: false,
+                user: "Li Minng",
+            },
+        });
+    </script> 
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-show指令</title>
+    <script src="..\..\static\js\vue.js"></script>  
+</head>
+<body>
+    <div id="app">
+        <a v-show="v1">CXK</a>
+        <a v-show="!v1">BASKETBALL</a>
+        <hr>
+        <input type="button" value="切换" @click="v1 ? v1=false : v1=true">
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                v1:true,
+            },
+        });
+    </script> 
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>案例：用户登录</title>
+    <script src="..\..\static\js\vue.js"></script>  
+    <script src="..\..\static\js\axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="button" value="切换登录方式" @click="isSms ? isSms=false : isSms=true">
+    <hr>
+    <div v-show="isSms">
+        <p>
+            <label for="">手机号</label>
+            <input type="text" placeholder="手机号" v-model="sms.mobile">
+        </p>
+        <p>
+            <label for="">验证码</label>
+            <input type="password" placeholder="验证码" v-model="sms.code">
+        </p>
+    </div>
+    <div v-show="!isSms">
+        <p>
+            <label for="">用户名</label>
+            <input type="text" placeholder="用户名" v-model="info.username">
+        </p>
+        <p>
+            <label for="">密&emsp;码</label>
+            <input type="password" placeholder="密码" v-model="info.password">
+        </p>
+    </div>
+    <hr>
+    <input type="button" value="登 录" @click="login">
+</div>  
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isSms: true,
+            info: {
+                username: "",
+                password: "",
+            },
+            sms: {
+                mobile: "",
+                code: "",
+            }
+        },
+        methods: {
+            login: function () {
+                // 1.获取用户输入的值
+                let dataDict = this.isSms ? this.sms : this.info;
+
+                // 2.向某个地址发送网络请求（基于axios）
+                // https://api.luffycity.com/api/v1/auth/password/login/?loginWay=password
+                // {"username": "aaa", "password": "999"}
+                // https://api.luffycity.com/api/v1/auth/password/login/?loginWay=mobile
+                // {"mobile": "13333333333", "password": "000999"}
+                axios({
+                    method: "post",
+                    url: "https://...",
+                    params: {
+                        v1: 123,
+                        v2: 456
+                    },
+                    data: dataDict,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(function (res) {
+                    console.log(res.data);
+                }).catch(function (error) {
+                    console.log(error);
+                })
+            }
+        }
+    });
+</script> 
+</body>
+</html>

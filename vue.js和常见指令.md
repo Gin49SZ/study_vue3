@@ -458,6 +458,518 @@ v-on:focus
 </html>
 ```
 
+## 案例：数据管理
+
+- 数据列表
+
+  ```vue
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>插值表达式</title>
+      <script src="../../static/js/vue.js"></script>
+  </head>
+  <body>
+      <div id="app">
+          <h3>数据列表</h3>
+          <table>
+              <thead>
+                  <tr>
+                      <td>姓名</td>
+                      <td>年龄</td>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="item in dataList">
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.age }}</td>
+                  </tr>
+                
+              </tbody>
+          </table>
+      </div>  
+  
+      <script>
+          var app = new Vue({
+              el: '#app',
+              data: {
+                  dataList: [
+                      {name: 'Li Ming', age: 19},
+                      {name:'Zhang Hua', age:22}
+                  ],
+              },
+          });
+      </script> 
+  </body>
+  </html>
+  ```
+
+- 数据添加
+
+  ```vue
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>插值表达式</title>
+      <script src="../../static/js/vue.js"></script>
+  </head>
+  <body>
+      <div id="app">
+          <h3>表单区域</h3>
+          <div>
+              <label>姓名</label>
+              <input type="text" v-model="name">
+          </div>
+          <div>
+              <label>年龄</label>
+              <input type="text" v-model="age">
+          	<input type="submit" value="提交" @click="addUser">
+          </div>
+  
+          <h3>数据列表</h3>
+          <table>
+              <thead>
+                  <tr>
+                      <td>姓名</td>
+                      <td>年龄</td>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="item in dataList">
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.age }}</td>
+                  </tr>
+                
+              </tbody>
+          </table>
+      </div>  
+  
+      <script>
+          var app = new Vue({
+              el: '#app',
+              data: {
+                  name: "",
+                  age: "",
+                  dataList: [
+                      {name: 'Li Ming', age: 19},
+                      {name:'Zhang Hua', age:22}
+                  ],
+              },
+              methods: {
+                  addUser: function () {
+                      // 创建行数据
+                      let row = {
+                          name: this.name,
+                          age: this.age
+                      };
+                      // 添加到数据表格 -> 添加到dataList
+                      this.dataList.push(row);
+  
+                      // 数据置空
+                      this.name = "";
+                      this.age = "";
+                  }
+              }
+          });
+      </script> 
+  </body>
+  </html>
+  ```
+
+- 删除功能
+
+  > splice(indx, delete_num, add_element)
+  >
+  > 第一个参数：执行的索引
+  >
+  > 第二个参数：从该索引开始要删除的元素个数，即返回的元素列表包含的元素个数
+  >
+  > 第三个参数：要添加的元素
+  >
+  > ```javascript
+  > dataList = ['a', 'b', 'c'];
+  > del_el = splice(2, 1);
+  > console.log(del_el)
+  > 
+  > >>>['c']
+  > ```
+
+  ```vue
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>插值表达式</title>
+      <script src="../../static/js/vue.js"></script>
+  </head>
+  <body>
+      <div id="app">
+          <h3>表单区域</h3>
+          <div>
+              <label>姓名</label>
+              <input type="text" v-model="name">
+          </div>
+          <div>
+              <label>年龄</label>
+              <input type="text" v-model="age">
+          	<input type="submit" value="提交" @click="addUser">
+          </div>
+  
+          <h3>数据列表</h3>
+          <table>
+              <thead>
+                  <tr>
+                      <td>姓名</td>
+                      <td>年龄</td>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(idx, item) in dataList">
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.age }}</td>
+                      <td><input type="button" value="删除" @click="deleteRow(idx)"></td>
+                  </tr>
+                
+              </tbody>
+          </table>
+      </div>  
+  
+      <script>
+          var app = new Vue({
+              el: '#app',
+              data: {
+                  name: "",
+                  age: "",
+                  dataList: [
+                      {name: 'Li Ming', age: 19},
+                      {name:'Zhang Hua', age:22}
+                  ],
+              },
+              methods: {
+                  addUser: function () {
+                      // 创建行数据
+                      let row = {
+                          name: this.name,
+                          age: this.age
+                      };
+                      // 添加到数据表格 -> 添加到dataList
+                      this.dataList.push(row);
+  
+                      // 数据置空
+                      this.name = "";
+                      this.age = "";
+                  },
+                  deleteRow: function (idx) {
+                      //根据索引删除dataList的值
+                      this.dataList.splice(idx, 1);
+                  }
+              }
+          });
+      </script> 
+  </body>
+  </html>
+  ```
+
+  当执行某一个事件，例如`@click="func(v1, v2, ...)"`，可以将所需要的参数都通过函数传递过去；
+
+  另外，还有一种传递参数的方法，即通过默认的`event`参数，在标签中定义`data-参数名`后，即可在event参数中找到对应的值
+
+  ```vue
+  ...
+  <td><input type="button" value="删除" @click="deleteRow()" :data-idx="idx"></td>
+  
+  ...
+  <script>
+      ...
+      deleteRow: function () {
+          //通过默认的event参数来删除
+          let idx = event.target.dataset.idx;
+          this.dataList.splice(idx, 1)
+      }
+  </script>
+  ```
+
+- 编辑功能
+
+  > 解包
+  >
+  > 在es6（JavaScript版本）中，支持解包功能，和python一样
+  >
+  > ```javascript
+  > let {id, name} = {id: 1, name: 'Li Ming'}
+  > console.log(id, name)
+  > 
+  > >>> 1 Li Ming
+  > ```
+
+  ```vue
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>插值表达式</title>
+      <script src="../../static/js/vue.js"></script>
+  </head>
+  <body>
+      <div id="app">
+          <h3>表单区域</h3>
+          <div>
+              <label>姓名</label>
+              <input type="text" v-model="name">
+          </div>
+          <div>
+              <label>年龄</label>
+              <input type="text" v-model="age">
+              <input type="submit" :value="title" @click="modifyUser">
+          </div>
+  
+          <h3>数据列表</h3>
+          <table>
+              <thead>
+                  <tr>
+                      <td>姓名</td>
+                      <td>年龄</td>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(idx, item) in dataList">
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.age }}</td>
+                      <td><input type="button" value="删除" @click="deleteRow(idx)" :data-idx="idx"></td>
+                      <td><input type="button" value="编辑" @click="editRow" :data-idx="idx"></td>
+                  </tr>
+                
+              </tbody>
+          </table>
+      </div>  
+  
+      <script>
+          var app = new Vue({
+              el: '#app',
+              data: {
+                  name: "",
+                  age: "",
+                  title: "新建",
+                  editIndex: undefined,
+                  dataList: [
+                      {name: 'Li Ming', age: 19},
+                      {name:'Zhang Hua', age:22}
+                  ],
+              },
+              methods: {
+                  modifyUser: function () {
+                      console.log(this.editIndex)
+                      if(this.editIndex){
+                          //编辑
+                          this.dataList[this.editIndex].name = this.name;
+                          this.dataList[this.editIndex].age = this.age;    
+                          
+                          //清空editIndex
+                          this.editIndex = undefined;                     
+                      }else{
+                          //新增
+                          // 创建行数据
+                          let row = {
+                              name: this.name,
+                              age: this.age
+                          };
+                          // 添加到数据表格 -> 添加到dataList
+                          this.dataList.push(row);
+                      }
+                      // 数据置空
+                      this.name = "";
+                      this.age = "";          
+                      
+                      //默认为新建
+                      this.title = "新建"; 
+  
+                  },
+                  deleteRow: function (idx) {
+                      //根据索引删除dataList的值
+                      this.dataList.splice(idx, 1);
+  
+                      //查看event参数中的idx
+                      console.log(event.target.dataset.idx)
+                  },
+                  editRow: function () {
+                      let idx = event.target.dataset.idx;
+  
+                      // 通过解包来获取变量
+                      let {name, age} = this.dataList[idx];
+                      
+                      // 将值赋给输入框
+                      this.name = name;
+                      this.age = age;
+  
+                      //修改按钮value
+                      this.title = "编辑";
+  
+                      //修改editIndex的值以执行编辑
+                      this.editIndex = idx;
+  
+                  }
+              }
+          });
+      </script> 
+  </body>
+  </html>
+  ```
+
+## 2.6 v-if指令
+
+条件判断，条件成立则显示，不成立则不显示
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-if指令</title>
+    <script src="..\..\static\js\vue.js"></script>  
+</head>
+<body>
+    <div id="app">
+        <a v-if="isLogin">您好，{{ user }}</a>
+        <a v-else href="">登录</a>
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                isLogin: false,
+                user: "Li Minng",
+            },
+        });
+    </script> 
+</body>
+</html>
+```
+
+if后面不一定必须有else，并且if和else可以连用
+
+```vue
+<a v-if="isA"></a>
+
+<a v-else-if="isB"></a>
+
+<a v-else-if="isC"></a>
+
+<a v-else></a>
+```
+
+## 2.7 v-show指令
+
+根据条件显示或者隐藏（但是标签都会渲染要页面，v-if是有和无，v-show是显示和隐藏`display=none`）
+
+```vue
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-show指令</title>
+    <script src="..\..\static\js\vue.js"></script>  
+</head>
+<body>
+    <div id="app">
+        <a v-show="v1">CXK</a>
+        <a v-show="!v1">BASKETBALL</a>
+        <hr>
+        <input type="button" value="切换" @click="Switch">
+    </div>  
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                v1:true,
+            },
+            methods: {
+                Switch: function () {
+                    if(this.v1){
+                        this.v1 = false;
+                    }else{
+                        this.v1 = true;
+                    }
+                }
+            }
+        });
+    </script> 
+</body>
+</html>
+```
+
+简单的操作可以直接在`@click=""`中添加表达式而不使用函数
+
+```vue
+<input type="button" value="切换" @click="v1 ? v1=false : v1=true">
+```
+
+v-show的使用例子：短信验证码登录和用户名密码登录之间的切换
+
+## 案例：用户登录（axios）
+
+axios是一个HTTP库，可以发送HTTP请求
+
+```vue
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+```
+
+也可以下载下来后在本地进行导入
+
+```vue
+<script src="../../static/js/axios.min.js"></script>
+```
+
+在后期学习了脚手架，也可以通过npm安装来使用
+
+一个使用例子：
+
+```vue
+<script src="../../static/js/axios.min.js"></script>
+<script>
+	axios({
+        method: "post",
+        url: "https://...",
+        params: {
+            v1: 123,
+            v2: 456
+        },
+        data: {
+            name: "ABC",
+            pwd: "123"
+        },
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function (res) {
+        console.log(res.data);
+    }).catch(function (error) {
+        console.log(error);
+    })
+</script>
+```
+
+案例：用户登录
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
