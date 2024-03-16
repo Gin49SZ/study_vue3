@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>router+axios</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        .container{
+            width: 980px;
+            margin: 0 auto;
+        }
+        .menu{
+            height: 48px;
+            background-color: #499ef3;
+            line-height: 48px;
+        }
+        .menu a{
+            color:white;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+    </style>
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/vue-router.js"></script>
+    <script src="../static/js/axios.min.js"></script>
+</head>
+<body>
+{% verbatim myblock %}
+<div id="app">
+    <div class="menu">
+        <div class="container">
+            <router-link to="/main">Main</router-link>
+            <router-link to="/data1">Data</router-link>
+        </div>
+    </div>
+    <div class="container">
+        <router-view></router-view>
+    </div>
+</div>
+{% endverbatim myblock %}
+
+<script>
+    const Home= {template: '<div>首页内容...</div>'};
+
+    const Data1= {
+        data: function () {
+            // 定义页面需要数据，使用函数返回对象，可以保证创建的对象只能在组件中使用
+            return {
+                dataList: [],
+            }
+        },
+        created: function (){
+            // 组件创建完毕后自动出发，发送HTTP请求
+            // created在页面渲染之前执行，所哟不可以对DOM树进行操作
+            axios({
+                method:"get",
+                url:'http://127.0.0.1:8000/data1/',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }).then((res) => {
+                this.dataList = res.data.data;
+                for(item in this.dataList){
+                    console.log(item)
+                }
+            })
+        },
+        mounted: function () {
+            // mounted在页面渲染结束之后执行，可以对DOM树进行操作
+        },
+        template: `
+          {% verbatim myblock %}
+          <div>
+            <div v-for="item in dataList">
+              <a>{{item.name}}</a>
+              <a>{{item.age}}</a>
+            </div>
+          </div>
+          {% endverbatim myblock %}
+        `
+    };
+
+    const router = new VueRouter({
+        routes: [
+            {path: '/main', component: Home},
+            {path: '/data1', component: Data1},
+        ],
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        // 将router添加到vue中
+        router: router,
+    });
+</script>
+</body>
+</html>

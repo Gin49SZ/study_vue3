@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>局部组件</title>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>======当前页面======</h1>
+    <div>{{name}}</div>
+    <hr>
+    <h1>======引入子组件======</h1>
+    <!--不影响其他Vue中的内容的使用-->
+    <Demo></Demo>
+    <!--组件也可以反复使用-->
+    <Bb></Bb>
+    <Bb></Bb>
+
+</div>  
+
+<script>
+    // 创建子组件
+    const Demo = {
+        // 组件中的data是一个方法，并返回值（与Vue的对象不同）
+        data: function () {
+            return {
+                msg:'hhhh'
+            }
+        },
+        template: `
+          <div>
+            <h1>{{msg}}</h1>
+            <input type="text" v-model="msg">
+            <input type="button" @click="showMsg" value="点击这里展开msg">
+          </div>
+        `,
+        methods: {
+            showMsg: function () {
+                alert(this.msg);
+            }
+        }
+    }
+
+    const Bili = {
+        data: function () {
+            return {
+                dataList: [
+                    {name: 'Li Ming', age: 19},
+                    {name:'Zhang Hua', age:22}
+                ],
+            }
+        },
+        template: `
+          <h3>数据列表</h3>
+          <table>
+            <thead>
+            <tr>
+              <td>姓名</td>
+              <td>年龄</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(idx, item) in dataList">
+              <td>{{ item.name }}</td>
+              <td>{{ item.age }}</td>
+            </tr>
+
+            </tbody>
+          </table>
+        `
+    }
+    // 应用组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: 'Zhang Hua',
+        },
+
+        // 1.将组件挂载到vue对象中
+        components: {
+            // 挂在子组件
+            Demo,
+            Bb: Bili
+        },
+        methods: {}
+
+    });
+</script> 
+</body>
+</html>

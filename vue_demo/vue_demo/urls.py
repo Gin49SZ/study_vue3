@@ -21,4 +21,6 @@ from app01 import views
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path("index/", views.index),
+    path("router&axios/", views.router_axios),
+    path("data1/", views.data1)
 ]

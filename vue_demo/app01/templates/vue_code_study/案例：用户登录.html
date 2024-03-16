@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>案例：用户登录</title>
-    <script src="..\..\static\js\vue.js"></script>  
-    <script src="..\..\static\js\axios.min.js"></script>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/axios.min.js"></script>
 </head>
 <body>
 <div id="app">
@@ -58,21 +58,30 @@
                 // {"username": "aaa", "password": "999"}
                 // https://api.luffycity.com/api/v1/auth/password/login/?loginWay=mobile
                 // {"mobile": "13333333333", "password": "000999"}
+                let url;
+                if(this.isSms){
+                    url = "https://api.luffycity.com/api/v1/auth/password/login/?loginWay=mobile"
+                }else{
+                    url = "https://api.luffycity.com/api/v1/auth/password/login/?loginWay=password"
+                }
                 axios({
                     method: "post",
-                    url: "https://...",
-                    params: {
-                        v1: 123,
-                        v2: 456
-                    },
+                    url: url,
                     data: dataDict,
                     headers: {
                         "Content-Type": "application/json"
                     }
                 }).then(function (res) {
-                    console.log(res.data);
+                    console.log("res", res.data);
+                    if(res.data.code === -1){
+                        alert(res.data.msg);
+                        return;
+                    }
+                    // 网络成功后跳转首页
+                    window.location.href = "https://api.luffycity.com"
                 }).catch(function (error) {
-                    console.log(error);
+                    console.log("error", error);
+                    alert("请求异常，请重新尝试")
                 })
             }
         }

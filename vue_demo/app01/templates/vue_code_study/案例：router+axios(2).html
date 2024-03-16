@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>router+axios</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        .container{
+            width: 980px;
+            margin: 0 auto;
+        }
+        .menu{
+            height: 48px;
+            background-color: #499ef3;
+            line-height: 48px;
+        }
+        .menu a{
+            color:white;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+    </style>
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/vue-router.js"></script>
+    <script src="../static/js/axios.min.js"></script>
+</head>
+<body>
+{% verbatim myblock %}
+<div id="app">
+    <div class="menu">
+        <div class="container">
+            <router-link to="/main">Main</router-link>
+            <router-link to="/data1">Data</router-link>
+        </div>
+    </div>
+    <div class="container">
+        <router-view></router-view>
+    </div>
+</div>
+{% endverbatim myblock %}
+
+<script>
+    const Home= {template: '<div>首页内容...</div>'};
+
+    const Data1 = {
+        data: function () {
+            return {
+                dataList: [],
+                size: 2,
+            }
+        },
+        created: function (){
+            // 组件创建完毕后自动触发，发送HTTP请求
+            axios({
+                method:"get",
+                url:'/data1/',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }).then((res) => {
+                this.dataList = res.data.data;
+            })
+        },
+        template: `
+          {% verbatim myblock %}
+          <div>
+            <div v-for="item in dataList">
+              <router-link :to="{name: 'Detail', params:{id:item.id}, query:{page:2, size:size}}">点击查看用户详情</router-link>
+                <a>{{item.id}}</a>
+                <a>{{item.name}}</a>
+                <a>{{item.age}}</a>
+            </div>
+          </div>
+          {% endverbatim myblock %}
+        `
+    };
+
+    const Detail = {
+        data: function () {
+            return {
+                title: "详细页面",
+                userid: null,
+            }
+        },
+        created: function () {
+            this.userid = this.$route.params.id;
+            // 此处可以根据用户id发送ajax请求
+            let queryDict = this.$route.query;
+            console.log(queryDict);
+
+        },
+        template: `
+          {% verbatim myblock %}
+          <div>
+            <h2>用户详情</h2>
+            <div>当前用户ID为{{userid}}</div>
+          </div>
+          {% endverbatim myblock %}
+        `
+    }
+
+    const router = new VueRouter({
+        routes: [
+            {path: '/main', component: Home},
+            {path: '/data1', component: Data1},
+            {path:'/detail/:id', component: Detail, name: 'Detail'}
+        ],
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        // 将router添加到vue中
+        router: router,
+    });
+</script>
+</body>
+</html>

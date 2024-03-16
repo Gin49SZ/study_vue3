@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全局组件</title>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>======当前页面======</h1>
+    <div>{{name}}</div>
+    <hr>
+    <h1>======引入子组件======</h1>
+    <!--不影响其他Vue中的内容的使用-->
+    <Demo></Demo>
+    <!--组件也可以反复使用-->
+    <Bili></Bili>
+    <Bili></Bili>
+
+</div>  
+
+<script>
+    // 创建子组件
+    Vue.component('Demo', {
+            data: function () {
+                return {
+                    msg:'hhhh'
+                }
+            },
+            template: `
+              <div>
+                <h1>{{msg}}</h1>
+                <input type="text" v-model="msg">
+                <input type="button" @click="showMsg" value="点击这里展开msg">
+              </div>
+            `,
+            methods: {
+                showMsg: function () {
+                    alert(this.msg);
+                }
+            }
+    });
+
+    Vue.component('Bili', {
+        data: function () {
+            return {
+                dataList: [
+                    {name: 'Li Ming', age: 19},
+                    {name:'Zhang Hua', age:22}
+                ],
+            }
+        },
+        template: `
+          <h3>数据列表</h3>
+          <table>
+            <thead>
+            <tr>
+              <td>姓名</td>
+              <td>年龄</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(idx, item) in dataList">
+              <td>{{ item.name }}</td>
+              <td>{{ item.age }}</td>
+            </tr>
+
+            </tbody>
+          </table>
+        `
+    });
+
+    // 应用组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: 'Zhang Hua',
+        },
+
+        // 无需挂载
+        methods: {}
+
+    });
+</script> 
+</body>
+</html>
